@@ -4,10 +4,10 @@
 
 using namespace std;
 
-//Start of Class Peliculas
-class Peliculas{
+//Start of Class Pelicula
+class Pelicula{
     public:
-    Peliculas();
+    Pelicula();
     int getNumPeli();
     int getYear();
     int getDuracion();
@@ -30,59 +30,60 @@ class Peliculas{
         string titulo, genero;
 };
 
-Peliculas::Peliculas(){
+Pelicula::Pelicula(){
 
 }
 
-int Peliculas::getNumPeli(){
+int Pelicula::getNumPeli(){
     return numPeli;
 }
 
-int Peliculas::getYear(){
+int Pelicula::getYear(){
     return year;
 }
 
-int Peliculas::getDuracion(){
+int Pelicula::getDuracion(){
     return duracion;
 }
 
-int Peliculas::getCantidadActores(){
+int Pelicula::getCantidadActores(){
     return cantidadActores;
 }
 
 //int[] Peliculas::getListaActores();
 
-string Peliculas::getTitulo(){
+string Pelicula::getTitulo(){
     return titulo;
 }
 
-string Peliculas::getGenero(){
+string Pelicula::getGenero(){
     return genero;
 }
 
-void Peliculas::setNumPeli(int np){
+void Pelicula::setNumPeli(int np){
     numPeli = np;
 }
 
-void Peliculas::setYear(int an){
+void Pelicula::setYear(int an){
     year = an;
 }
 
-void Peliculas::setDuracion(int dur){
+void Pelicula::setDuracion(int dur){
     duracion = dur;
 }
 
-void Peliculas::setCantidadActores(int cnt){
+void Pelicula::setCantidadActores(int cnt){
     cantidadActores = cnt;
 }
 
-void Peliculas::muestra(){
+void Pelicula::muestra(){
     cout<<"Numero de Pelicula: "<<numPeli<<endl;
     cout<<"Año: "<<year<<endl;
     cout<<"Duración: "<<duracion<<endl;
     cout<<"Cantidad de Actores: "<<cantidadActores<<endl;
 }
 //End of Class Peliculas
+
 
 //Start of Class Actor
 class Actor{  
@@ -245,9 +246,71 @@ void Funcion::muestra(){
 
 int main(){
 
+    Actor actArr[20];
+    Funcion funcionArr[20];
+    Pelicula peliculaArr[20];
+
+    int contadorActor = 0, contadorPeliculas = 0;
+
+    ifstream actorIn("Proyecto 2/actores.txt");
+    ifstream peliculasIn("Proyecto 2/peliculas.txt");
+
+     int tempActId;
+     string tempActNm;
+     if (actorIn.is_open()){
+     while (!actorIn.eof()){
+       actorIn>>tempActId;
+       getline(cin, tempActNm);
+       actArr[contadorActor].setID(tempActId);
+       actArr[contadorActor].setNombre(tempActNm);
+       contadorActor++;
+    }
+    }  
+    actorIn.close();
+
+    int tmpNumPeli, tmpYear, tmpDuration, tmpNumberOfActors;
+    string tempGenere, tempPeliName;
+    if (peliculasIn.is_open()){
+     while (!peliculasIn.eof()){
+       peliculasIn>>tmpNumPeli>>tmpYear>>tmpDuration>>tempGenere>>tmpNumberOfActors;
+
+       for(int i = 0; i < tmpNumberOfActors; i++){
+
+       }
+       getline(cin, tempPeliName);
+       
+
+    
+
+
+       contadorPeliculas++;
+    }
+    }  
+    peliculasIn.close();
+
     cout<<"Bienvenido al la copia de IMBD!"<<endl;
     cout<<"";
 
 
     return 0;
 }
+
+
+
+
+
+
+/*
+$$$$$$$\                         $$$$$\  $$$$$$\  $$$$$$\ $$\      $$\ $$$$$$$$\       $$\   $$\ $$$$$$\  $$$$$$\   $$$$$$\   $$$$$$\  
+$$  __$$\                        \__$$ |$$  __$$\ \_$$  _|$$$\    $$$ |$$  _____|      $$ |  $$ |\_$$  _|$$  __$$\ $$  __$$\ $$  __$$\ 
+$$ |  $$ |$$\   $$\ $$\             $$ |$$ /  $$ |  $$ |  $$$$\  $$$$ |$$ |            $$ |  $$ |  $$ |  $$ /  \__|$$ /  $$ |$$ /  $$ |
+$$$$$$$\ |$$ |  $$ |\__|            $$ |$$$$$$$$ |  $$ |  $$\$$\$$ $$ |$$$$$\          $$$$$$$$ |  $$ |  \$$$$$$\  $$$$$$$$ |$$ |  $$ |
+$$  __$$\ $$ |  $$ |          $$\   $$ |$$  __$$ |  $$ |  $$ \$$$  $$ |$$  __|         $$  __$$ |  $$ |   \____$$\ $$  __$$ |$$ |  $$ |
+$$ |  $$ |$$ |  $$ |$$\       $$ |  $$ |$$ |  $$ |  $$ |  $$ |\$  /$$ |$$ |            $$ |  $$ |  $$ |  $$\   $$ |$$ |  $$ |$$ |  $$ |
+$$$$$$$  |\$$$$$$$ |\__|      \$$$$$$  |$$ |  $$ |$$$$$$\ $$ | \_/ $$ |$$$$$$$$\       $$ |  $$ |$$$$$$\ \$$$$$$  |$$ |  $$ | $$$$$$  |
+\_______/  \____$$ |           \______/ \__|  \__|\______|\__|     \__|\________|      \__|  \__|\______| \______/ \__|  \__| \______/ 
+          $$\   $$ |                                                                                                                   
+          \$$$$$$  |                                                                                                                   
+           \______/                                                                                                                    
+                                                                         
+*/

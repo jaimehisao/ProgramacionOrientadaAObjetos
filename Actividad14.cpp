@@ -214,7 +214,7 @@ int main(){
                     cout<<"---------------------------------------------------------------------"<<endl;
                     cout<<red<<"Recuerda que hay un maximo de 50 Taxis y van: "<<Taxi::getNumOfTaxis()<<def<<endl;
                     cout<<"Agregar un nuevo Taxi con ID "<<Taxi::getNumOfTaxis()+1<<endl;
-                    cout<<"Nombre del Responsable de Salón: "<<endl;
+                    cout<<"Nombre del Responsable del Taxi: "<<endl;
                     cin.ignore();
                     getline(cin, nombre);
                     cout<<"Celular del Responsable: "<<endl;
@@ -235,7 +235,6 @@ int main(){
             break;
         }
     }
-
 
     cout<<"Adios! Nos vemos pronto!"<<endl;
 

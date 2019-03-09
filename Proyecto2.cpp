@@ -10,29 +10,29 @@ using namespace std;
 class Pelicula{
     public:
     Pelicula();
-    Pelicula(int, int, int, int, string, string);
     int getNumPeli();
     int getYear();
     int getDuracion();
     int getCantidadActores();
-    //int[] getListaActores();
+    int getFromListaActores(int);
     string getTitulo();
     string getGenero();
 
     void setNumPeli(int);
     void setYear(int);
     void setDuracion(int);
-    void setCantidadActores(int);
     void setTitulo(string);
     void setGenero(string);
 
     void muestra();
 
-    int listaActores[10];
+    bool agregarActor(int);
+
 
     private:
         int numPeli, year, duracion, cantidadActores;
         string titulo, genero;
+        int listaActores[10];
 };
 
 Pelicula::Pelicula(){
@@ -42,15 +42,6 @@ Pelicula::Pelicula(){
         cantidadActores = 0;
         titulo = "";
         genero = "";
-}
-
-Pelicula::Pelicula(int numPeli, int year, int duracion, int cantidadActores, string titulo, string genero){
-        this -> numPeli = 0; 
-        this -> year = 0;
-        this -> duracion = 0;
-        this -> cantidadActores = 0;
-        this -> titulo = "";
-        this -> genero = "";
 }
 
 int Pelicula::getNumPeli(){
@@ -91,13 +82,14 @@ void Pelicula::setDuracion(int dur){
     duracion = dur;
 }
 
-void Pelicula::setCantidadActores(int cnt){
-    cantidadActores = cnt;
-}
-
 void Pelicula::setGenero(string gn){
     genero = gn;
 }
+
+void Pelicula::setTitulo(string titulo){
+    this -> titulo = titulo;
+}
+
 
 void Pelicula::muestra(){
     cout<<"Numero de Pelicula: "<<numPeli<<endl;
@@ -105,6 +97,23 @@ void Pelicula::muestra(){
     cout<<"Duración: "<<duracion<<endl;
     cout<<"Cantidad de Actores: "<<cantidadActores<<endl;
 }
+
+int Pelicula::getFromListaActores(int i){
+return listaActores[i];
+}
+
+bool Pelicula::agregarActor(int id){
+    for(int i = 0; i < cantidadActores; i++){
+        if(listaActores[i] == id && cantidadActores <= 10){
+            return false;
+        }else if(listaActores[i] != id && cantidadActores <= 10){
+            listaActores[i] = id;
+            cantidadActores++;
+            return true;
+        }
+    }
+}
+
 //End of Class Peliculas
 
 
@@ -279,6 +288,8 @@ void Funcion::muestra(){
 }
 //End of Class Funcion
 
+
+
 int main(){
 
     Actor actArr[20];
@@ -313,7 +324,7 @@ int main(){
     if (peliculasIn.is_open()){
      while (!peliculasIn.eof()){
        peliculasIn>>tmpNumPeli>>tmpYear>>tmpDuration>>tempGenere>>tmpNumberOfActors;
-        tmp.setCantidadActores(tmpNumberOfActors);
+        //tmp.setCantidadActores(tmpNumberOfActors);
         tmp.setNumPeli(tmpNumPeli);
         tmp.setYear(tmpYear);
         tmp.setDuracion(tmpDuration);
@@ -321,9 +332,11 @@ int main(){
        for(int i = 0; i < tmpNumberOfActors; i++){
            int tmpInt;
            peliculasIn>>tmpInt;
-           tmp.listaActores[i] = tmpInt;
+           tmp.agregarActor(tmpInt);
        }
        getline(peliculasIn, tempPeliName);
+       tmp.setTitulo(tempPeliName);
+       peliculaArr[contadorPeliculas] = tmp;
        contadorPeliculas++;
         }
     }  
@@ -369,21 +382,29 @@ int main(){
             break;
             case 'c':
             case 'C':{
-                for(int i = 0; i < contadorPeliculas; i++){
+                for(int i = 0; i < contadorFunciones; i++){
                     cout<<"-------------------------------------------------------"<<endl;
-                    cout<<"El Titulo de la Pelicula es: "<<peliculaArr[i].getTitulo()<<endl;
-                    cout<<"El Numero de Pelicula es: "<<peliculaArr[i].getNumPeli()<<endl;
-                    cout<<"El Año de la Pelicula es: "<<peliculaArr[i].getYear()<<endl;
-                    cout<<"El Genero de la Pelicula es: "<<peliculaArr[i].getGenero()<<endl;
-                    cout<<"La duracion de la Pelicula es: "<<peliculaArr[i].getDuracion()<<endl;
+                    cout<<"La Clave de la funcion es: "<<funcionArr[i].getClaveFuncion()<<endl;
+                    cout<<"La hora de la funcion es: ";
+                    funcionArr[i].getHora().muestra();
+                    cout<<endl;
+                    cout<<"El numero de pelicula es: "<<funcionArr[i].getNumPeli()<<endl;
+                    cout<<"La sala de la pelicula es: "<<funcionArr[i].getSala()<<endl;
                     cout<<"-------------------------------------------------------"<<endl;
                 }
-
             }
             break;
             case 'd':
             case 'D':{
-                for(int i = 0; i < contadorFunciones; i++){
+                int actorCurr;
+                cout<<"Dame el actor que quieres buscar"<<endl;
+                cin>>actorCurr;
+
+
+                for(int i = 0; i < contadorPeliculas; i++){
+                    for(int j = 0; j < peliculaArr[i].getCantidadActores(); j++){
+                        
+                    }
                     cout<<"-------------------------------------------------------"<<endl;
                     cout<<"La Clave de la funcion es: "<<funcionArr[i].getClaveFuncion()<<endl;
                     cout<<"La hora de la funcion es: ";
@@ -416,3 +437,4 @@ $$$$$$$  |\$$$$$$$ |\__|      \$$$$$$  |$$ |  $$ |$$$$$$\ $$ | \_/ $$ |$$$$$$$$\
            \______/                                                                                                                    
                                                                          
 */
+

@@ -99,19 +99,22 @@ void Pelicula::muestra(){
 }
 
 int Pelicula::getFromListaActores(int i){
-return listaActores[i];
+    return listaActores[i];
 }
 
 bool Pelicula::agregarActor(int id){
-    for(int i = 0; i < cantidadActores; i++){
-        if(listaActores[i] == id && cantidadActores <= 10){
-            return false;
-        }else if(listaActores[i] != id && cantidadActores <= 10){
-            listaActores[i] = id;
-            cantidadActores++;
-            return true;
+    bool boole = true;
+    for(int i = 0; i < cantidadActores+1; i++){
+        if(listaActores[i] == id || cantidadActores >= 10){
+            boole = false;
         }
-    }
+        }
+        if(boole){
+        listaActores[cantidadActores] = id;
+        cantidadActores++;
+        boole = true;
+        }
+    return boole;
 }
 
 //End of Class Peliculas
@@ -183,7 +186,7 @@ hh = 0;
 mm = 0;
 }
 
-Hora::Hora(int h, int m){
+Hora::Hora(int hh, int mm){
 this -> hh = hh;
 this -> mm = mm;
 }
@@ -288,9 +291,44 @@ void Funcion::muestra(){
 }
 //End of Class Funcion
 
+//Ignore this part of the Code!
+namespace Color {
+    enum Code {
+        FG_RED      = 31,
+        FG_GREEN    = 32,
+        FG_BLUE     = 34,
+        FB_PURPLE  = 82,
+        FG_YELLOW  = 51,
+        FG_DEFAULT  = 39,
+        BG_RED      = 41,
+        BG_GREEN    = 42,
+        BG_BLUE     = 44,
+        BG_DEFAULT  = 49,
+        BLINK = 5
+    };
+    class Modifier {
+        Code code;
+    public:
+        Modifier(Code pCode) : code(pCode) {}
+        friend std::ostream&
+        operator<<(std::ostream& os, const Modifier& mod) {
+            return os << "\033[" << mod.code << "m";
+        }
+    };
+}
+
 
 
 int main(){
+
+    Color::Modifier red(Color::FG_RED);
+    Color::Modifier redb(Color::BG_RED);
+    Color::Modifier grn(Color::FG_GREEN);
+    Color::Modifier def(Color::FG_DEFAULT);
+    Color::Modifier defb(Color::BG_DEFAULT);
+    Color::Modifier blu(Color::FG_BLUE);
+    Color::Modifier pur(Color::FB_PURPLE);
+    Color::Modifier ylw(Color::FG_YELLOW);
 
     Actor actArr[20];
     Funcion funcionArr[20];
@@ -301,7 +339,7 @@ int main(){
     ifstream actorIn("/Users/hisao/Documents/GitHub/ProgramacionOrientadaAObjetosITESM/Proyecto 2/actores.txt");
     ifstream peliculasIn("/Users/hisao/Documents/GitHub/ProgramacionOrientadaAObjetosITESM/Proyecto 2/peliculas.txt");
 
-    cout<<"Leyendo Archivos"<<endl;
+    cout<<redb<<"Leyendo Archivos"<<defb<<endl;
 
      int tempActId;
      string tempActNm;
@@ -344,15 +382,38 @@ int main(){
 
     cout<<"Peliculas Leidas!"<<endl<<endl<<endl;
 
+    cout<<"Cuantas funciones quieres agregar?"<<endl;
+    cin>>contadorFunciones;
+
+    int tmpH, tmpM, tmpSala;
+    string tmpCvef;
+    Funcion tmpFunc;
+    Hora tmpHora;
+    for(int i = 0; i < contadorFunciones; i++){
+        cout<<"Que clave de funcion tiene?"<<endl;
+        cin>>tmpCvef;
+        cout<<"Que numero de pelicula es?"<<endl;
+        cin>>tmpNumPeli;
+        cout<<"En que sala se va a presentar?"<<endl;
+        cin>>tmpSala;
+        cout<<"A que hora es? Ponlo en el formato HH espacio MM"<<endl;
+        cin>>tmpH>>tmpM;
+        Hora tmpHora(tmpH, tmpM);
+        Funcion tmpFunc(tmpCvef, tmpNumPeli, tmpHora, tmpSala);
+        funcionArr[i] = tmpFunc;
+    }
+
     char optn = 'Q';
 
-    while(optn != 'E' && optn != 'e'){
+    while(optn != 'G' && optn != 'g'){
         cout<<"Bienvenido al la copia de IMBD!"<<endl;
-        cout<<"A.- Consulta de todos los Actores"<<endl;
-        cout<<"B.- Consulta de todas las Peliculas"<<endl;
-        cout<<"C.- Consulta de todas las funciones disponibles"<<endl;
-        cout<<"D.- Consulta de peliculas por actor"<<endl;
-        cout<<"E.- Terminar"<<endl;
+        cout<<red<<"A.- Consulta de todos los Actores"<<def<<endl;
+        cout<<blu<<"B.- Consulta de todas las Peliculas"<<def<<endl;
+        cout<<grn<<"C.- Consulta de todas las funciones disponibles"<<def<<endl;
+        cout<<red<<"D.- Consulta de peliculas por actor"<<def<<endl;
+        cout<<blu<<"E.- Consulta de funciones por hora"<<def<<endl;
+        cout<<grn<<"F.- Consulta por clave de funcion"<<def<<endl;
+        cout<<red<<"G.- Terminar"<<def<<endl;
 
         cin>>optn;
 
@@ -396,26 +457,52 @@ int main(){
             break;
             case 'd':
             case 'D':{
-                int actorCurr;
-                cout<<"Dame el actor que quieres buscar"<<endl;
+                int actorCurr, cantPelis = 0;
+                cout<<"Dame el ID del actor que quieres buscar..."<<endl;
                 cin>>actorCurr;
 
+                cout<<"Los resultados para el actor con el ID "<<actorCurr<<" son: "<<endl;
 
                 for(int i = 0; i < contadorPeliculas; i++){
                     for(int j = 0; j < peliculaArr[i].getCantidadActores(); j++){
-                        
+                        if(peliculaArr[i].getFromListaActores(j) == actorCurr){
+                            cout<<"-------------------------------------------------------"<<endl;
+                            cout<<"Pelicula: "<<peliculaArr[i].getTitulo()<<endl;
+                            cout<<"-------------------------------------------------------"<<endl;
+                            cantPelis++;
+                        }
                     }
-                    cout<<"-------------------------------------------------------"<<endl;
-                    cout<<"La Clave de la funcion es: "<<funcionArr[i].getClaveFuncion()<<endl;
-                    cout<<"La hora de la funcion es: ";
-                    funcionArr[i].getHora().muestra();
-                    cout<<endl;
-                    cout<<"El numero de pelicula es: "<<funcionArr[i].getNumPeli()<<endl;
-                    cout<<"La sala de la pelicula es: "<<funcionArr[i].getSala()<<endl;
-                    cout<<"-------------------------------------------------------"<<endl;
+                }
+                cout<<endl;
+                cout<<"El actor con el ID: "<<actorCurr<<" sale en: "<<cantPelis<<" peluculas."<<endl;
+                cout<<endl;
+            }
+            break;
+            case 'e':
+            case 'E':{
+                int tmp1, tmp2;
+                cout<<"Que hora de funciones quieres buscar? Pon la hora y luego el minuto eg. 10 11"<<endl;
+                cin>>tmp1>>tmp2;
+                Hora tmpHr(tmp1, tmp2);
+                for(int i = 0; i < contadorFunciones; i++){
+                    if(funcionArr[i].getHora().getHour() == tmpHr.getHour() && funcionArr[i].getHora().getMinute() == tmpHr.getMinute()){
+                        cout<<"-------------------------------------------------------"<<endl;
+                        for(int j = 0; j < contadorPeliculas; j++){
+                            if(funcionArr[i].getNumPeli() == peliculaArr[j].getNumPeli()){
+                                cout<<"Titulo de Pelicula: "<<funcionArr[i].getNumPeli()<<endl;
+                                cout<<"Sala: "<<funcionArr[i].getSala()<<endl;
+                            }
+                        }
+                        cout<<"-------------------------------------------------------"<<endl;
+                            
+                    }
                 }
             }
             break;
+            case 'f':
+            case 'F':{
+
+            }
         }
     }
 

@@ -24,6 +24,7 @@ public:
     Reloj operator+(Reloj r);  // suma un Reloj con otro Reloj y regresa un nuevo Reloj
     Reloj operator-(int m);  // a un Reloj le resta una cantidad de minutos y regresa el nuevo Reloj
     Reloj operator-(Reloj r); // a un Reloj le resta otro Reloj y regresa el nuevo Reloj
+    friend Reloj operator-(Reloj, Reloj);
     bool operator>(Reloj r);  // regresa true/false si el primer Reloj es > el segundo
     bool operator<(Reloj r); // regresa true/false si el primer Reloj es < el segundo
     bool operator==(Reloj r); // regresa true/false si ambos relojes son iguales
@@ -126,6 +127,13 @@ Reloj Reloj::operator-(int minuto){
             r.hora = 23;
         }
     }
+    return r;
+}
+
+Reloj operator+(Reloj r1, Reloj r2){
+    Reloj r;
+    r = r1;
+    r += r2.minuto + (r2.hora * 60);
     return r;
 }
 

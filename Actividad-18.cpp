@@ -6,25 +6,24 @@ using namespace std;
 class Reloj {
 private:
     int hora;
-    int minuto;
+    int minu;
 public:
     Reloj();
-    Reloj(int h);
-    Reloj(int h, int m);
-    void setHora(int h);
-    void setMin(int m);
+    Reloj(int hora);
+    Reloj(int hora, int minu);
+    void setHora(int hora);
+    void setMin(int minu);
     int getHora();
     int getMin();
     void muestra();
     void operator++();  // incrementa un minuto al reloj
-    void operator--();  // decrementa un minuto al reloj
-    void operator+=(int);
-    void operator-=(int);
+    void operator--(); // decrementa un minuto al reloj
+    void operator +=(int minuto);
+    void operator -=(int minuto);
     Reloj operator+(int m);  // suma un Reloj con una cantidad de minutos y regresa el nuevo Reloj
-    Reloj operator+(Reloj r);  // suma un Reloj con otro Reloj y regresa un nuevo Reloj
+    friend Reloj operator+(Reloj r1, Reloj r2);  // suma un Reloj con otro Reloj y regresa un nuevo Reloj
     Reloj operator-(int m);  // a un Reloj le resta una cantidad de minutos y regresa el nuevo Reloj
-    Reloj operator-(Reloj r); // a un Reloj le resta otro Reloj y regresa el nuevo Reloj
-    friend Reloj operator-(Reloj, Reloj);
+    friend Reloj operator-(Reloj r1, Reloj r2); // a un Reloj le resta otro Reloj y regresa el nuevo Reloj
     bool operator>(Reloj r);  // regresa true/false si el primer Reloj es > el segundo
     bool operator<(Reloj r); // regresa true/false si el primer Reloj es < el segundo
     bool operator==(Reloj r); // regresa true/false si ambos relojes son iguales
@@ -32,23 +31,23 @@ public:
 
 Reloj::Reloj(){
     hora = 0;
-    minuto = 0;
+    minu = 0;
 }
-Reloj::Reloj(int h){
-    hora = h;
-    minuto = 0;
+Reloj::Reloj(int hora){
+    this->hora = hora;
+    minu = 0;
 }
-Reloj::Reloj(int h, int m){
-    hora = h;
-    minuto = m;
-}
-
-void Reloj::setHora(int h){
-    hora = h;
+Reloj::Reloj(int hora, int minu){
+    this->hora = hora;
+    this->minu = minu;
 }
 
-void Reloj::setMin(int m){
-    minuto = m;
+void Reloj::setHora(int hora){
+    this->hora = hora;
+}
+
+void Reloj::setMin(int minu){
+    this->minu = minu;
 }
 
 int Reloj::getHora(){
@@ -56,7 +55,7 @@ int Reloj::getHora(){
 }
 
 int Reloj::getMin(){
-    return minuto;
+    return minu;
 }
 
 
@@ -64,77 +63,118 @@ void Reloj::muestra(){
     if (hora<10)
         cout << "0";
     cout <<hora<<":";
-    if (minuto<10)
+    if (minu<10)
         cout << "0";
-    cout <<minuto<<endl;
+    cout <<minu<<endl;
 }
 
+//////////////////////////////////
+//  Aqui va tu codigo
+//////////////////////////////////
 
-//Operator Overloading
-void Reloj::operator--(){
-    minuto--;
-    if(minuto == -1){
-        minuto = 59;
+void Reloj::operator ++ () {
+    minu++;
+    if (minu == 60) {
+        hora++;
+        minu=0;
+        if (hora == 24) {
+            hora = 0;
+        }
+    }
+}
+
+void Reloj::operator -- () {
+    minu--;
+    if (minu == -1) {
+        minu = 59;
         hora--;
-        if(hora == -1){
+        if (hora == -1) {
             hora = 23;
         }
     }
 }
 
-void Reloj::operator += (int minuto){
-    this -> minuto  = this-> minuto + minuto;
-    while(this -> minuto >= 60){
-        this->minuto = this->minuto -60;
-        this->hora++;
-        if(this->hora == 24){
-            this->hora = 0;
+void Reloj::operator += (int minuto) {
+    minu = minu + minuto;
+    while (minu >= 60) {
+        minu = minu - 60;
+        hora = hora + 1;
+        if (hora == 24) {
+            hora = 0;
         }
     }
 }
 
-void Reloj::operator-=(int minuto){
-    this -> minuto = this -> minuto - minuto;
-    while(this -> minuto < 0){
-        this -> minuto = this -> minuto +60;
-        this -> hora = this -> hora - 1;
-        if(this -> hora == 0){
-            this -> hora = 23;
+void Reloj::operator -= (int minuto) {
+    minu = minu - minuto;
+    while (minu < 0) {
+        minu = minu + 60;
+        hora  = hora - 1;
+        if (hora < 0) {
+            hora = 23;
         }
     }
 }
 
-Reloj Reloj::operator+(int minuto){
+Reloj Reloj:: operator + (int m) {
     Reloj r = *this;
-    r.minuto = r.minuto + minuto;
-    while(r.minuto >= 60){
-        r.minuto = r.minuto - 60;
+    r.minu = r.minu + m;
+    while (r.minu >= 60) {
+        r.minu = r.minu - 60;
         r.hora = r.hora + 1;
-        if(r.hora == 24){
-            r.hora = 0;
+        if (hora == 24) {
+            hora = 0;
         }
     }
     return r;
 }
 
-Reloj Reloj::operator-(int minuto){
+Reloj Reloj:: operator - (int m) {
     Reloj r = *this;
-    r.minuto = r.minuto - minuto;
-    while(r.minuto < 0){
-        r.minuto = r.minuto + 60;
-        r.hora = r.hora -1;
-        if(r.hora < 0){
+    r.minu = r.minu - m;
+    while (r.minu < 0) {
+        r.minu = r.minu + 60;
+        r.hora = r.hora - 1;
+        if (hora < 20) {
             r.hora = 23;
         }
     }
     return r;
 }
 
-Reloj operator+(Reloj r1, Reloj r2){
+Reloj operator + (Reloj r1, Reloj r2) {
     Reloj r;
     r = r1;
-    r += r2.minuto + (r2.hora * 60);
+    r += (r2.minu + (r2.hora*60));
     return r;
+}
+
+Reloj operator - (Reloj r1, Reloj r2) {
+    Reloj r;
+    r = r1;
+    r -= (r2.minu + (r2.hora*60));
+    return r;
+}
+
+bool Reloj::operator > (Reloj r) {
+    int min1, min2;
+    min1 = hora*60 + minu;
+    min2 = r.hora*60 + r.minu;
+    return (min1 > min2);
+}
+
+bool Reloj::operator < (Reloj r) {
+    int min1, min2;
+    min1 = hora*60 + minu;
+    min2 = r.hora*60 + r.minu;
+    return (min1 < min2);
+}
+
+bool Reloj::operator == (Reloj r) {
+    int min1, min2;
+    min1 = hora*60 + minu;
+    min2 = r.hora*60 + r.minu;
+    return (min1 == min2);
 }
 
 

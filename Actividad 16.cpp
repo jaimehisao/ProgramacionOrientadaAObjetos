@@ -1,9 +1,22 @@
 #include <iostream>
 
+/*
+*  Multiplicación de dos fracciones
+>Compara si la primera fracción es mayor que la segunda
+++ Suma el valor 1/1 a una fracción y regresa la nueva fracción
+-       Operador unitario – (negativo), regresa una fracción que contiene la fracción original con el numerador con el signo cambiado.
+-       Operador resta  - . Para implementar este método realiza una suma del valor de la primera fracción con el valor negativo de la segunda fracción (usando el operador negativo que hiciste en el punto anterior).
+*/
+
 using namespace std;
 
 class Fraccion{
 	friend double operator !(Fraccion f);
+    friend Fraccion operator + (Fraccion, Fraccion);
+    friend Fraccion operator > (Fraccion, Fraccion);
+    friend Fraccion operator - (Fraccion);
+    friend Fraccion operator - (Fraccion, Fraccion);
+    friend Fraccion operator ++ (Fraccion);
 public:
 	// Constructores
 	Fraccion();
@@ -15,7 +28,7 @@ public:
 	void setNum(int n);
 	void setDen(int d);
 	// metodos
-	Fraccion operator + (Fraccion f);
+
 	void muestra();
 	
 private:
@@ -64,12 +77,33 @@ double operator !(Fraccion f)
     return  (double)f.num/f.den;
 }
 
-Fraccion Fraccion:: operator + (Fraccion f){ 
+Fraccion operator + (Fraccion f, Fraccion f2){ 
     Fraccion res;
-    res.num = this->num * f.den + this->den * f.num;
-    res.den = this->den * f.den;
+    res.num = f2.num * f.den + f2.den * f.num;
+    res.den = f2.den * f.den;
     return res;
 }
+
+
+Fraccion operator > (Fraccion f, Fraccion f2){
+
+}
+
+Fraccion operator - (Fraccion f){
+
+}
+
+Fraccion operator - (Fraccion f, Fraccion f2){
+
+}
+
+Fraccion operator ++(Fraccion f1){
+    Fraccion retrn(1,1);
+    retrn = f1+retrn;
+    return retrn;
+}
+
+
 
 
 int main(){
@@ -77,13 +111,13 @@ int main(){
 	
     // la suma de las fracciones 1/3 y 3/4
     cout << endl;
-    cout << "La suma de las fracciones 1 y 2 " << endl;
+    cout << "La suma de las fracciones 1 y 2:m " << endl;
 	f4 = f1 + f2;
     f4.muestra();
     
     // el valor en decimal de la fracciÃ³n 1/3
     cout << endl;
-    cout << "El valor decimal de la fracciÃ³n 1 "<< endl;
+    cout << "El valor decimal de la fraccion 1: "<< endl;
     cout << !f1;
     
     return 0;

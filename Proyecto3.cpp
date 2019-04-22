@@ -33,35 +33,42 @@ class Hora{
 		bool operator==(Hora r);
 
   private:
-		int hh;//hora
-		int mm;//min
+		int hh; //Variable Hora
+		int mm;//Variable Minuto
 };
+
 Hora::Hora(){
 	hh = 0;
 	mm = 0;
 }
+
 Hora::Hora(int hora){
 	hh = hora;
 	mm = 0;
 }
+
 Hora::Hora(int hora, int min){
 	hh = hora;
 	mm = min;
 }
+
 void Hora::setHora(int hora){
 	hh = hora;
 }
+
 void Hora::setMin(int min){
 	mm = min;
 }
+
 int Hora::getHora(){
 	return hh;
 }
+
 int Hora::getMin(){
 	return mm;
 }
-//Sobrecarga
-//+
+
+//Sobrecarga de Operadores de la Clase Hora
 Hora Hora::operator+(int min){
   Hora res;
   res.mm =mm +min;
@@ -72,7 +79,7 @@ Hora Hora::operator+(int min){
   }
   return res;
 }
-//>=
+
 bool Hora::operator>=(Hora r){
   if(hh >=r.hh){
     if(mm >=r.mm){
@@ -84,7 +91,7 @@ bool Hora::operator>=(Hora r){
     return false;
   }
 }
-//<=
+
 bool Hora::operator<=(Hora r){
   if(hh <=r.hh){
     if(mm <=r.mm){
@@ -96,7 +103,7 @@ bool Hora::operator<=(Hora r){
     return false;
   }
 }
-//==
+
 bool Hora::operator==(Hora r){
   if(hh ==r.hh){
     if(mm ==r.mm){
@@ -115,7 +122,7 @@ bool Hora::operator==(Hora r){
 class Reserva{
   public:
     Reserva();
-    Reserva(string,int,Hora,int);
+    Reserva(string, int, Hora, int);
 
     void setClaveServicio(string);
     void setIdCliente(int);
@@ -127,7 +134,7 @@ class Reserva{
     Hora getHoraInicio();
     int getDuracion();
 
-    Hora calculaHoraFinReservacion(Hora h1);
+    Hora calculaHoraFinReservacion(Hora);
 
   private:
     string claveServicio;
@@ -145,37 +152,43 @@ Reserva::Reserva(){
   duracion=0; 
 }
 
-Reserva::Reserva(string CS, int iDC, Hora hHInicio, int dura){
-  claveServicio=CS;
-  idCliente=iDC;
-  horaInicio=hhInicio;
-  duracion=dura;
+Reserva::Reserva(string claveServicio, int idCliente, Hora horaInicio, int duracion){
+  this -> claveServicio = claveServicio;
+  this -> idCliente = idCliente;
+  this -> horaInicio = horaInicio;
+  this -> duracion = duracion;
 }
 
 //Setters
-void Reserva::setClaveServicio(string CS){
-  claveServicio=CS;
+void Reserva::setClaveServicio(string claveServicio){
+  this -> claveServicio = claveServicio;
 }
-void Reserva::setIdCliente(int iDC){
-  idCliente=iDC;
+
+void Reserva::setIdCliente(int idCliente){
+  this -> idCliente = idCliente;
 }
-void Reserva::setHoraInicio(Hora hhInicio){
-  horaInicio=hhInicio;
+
+void Reserva::setHoraInicio(Hora horaInicio){
+  this -> horaInicio = horaInicio;
 }
-void Reserva::setDuracion(int dura){
-  duracion=dura;
+
+void Reserva::setDuracion(int duracion){
+  this -> duracion = duracion;
 }
 
 //Getters
 string Reserva::getClaveServicio(){
   return claveServicio;
 }
+
 int Reserva::getIdCliente(){
   return idCliente;
 }
+
 Hora Reserva::getHoraInicio(){
   return horaInicio;
 }
+
 int Reserva::getDuracion(){
   return duracion;
 }
@@ -213,23 +226,23 @@ Servicio::Servicio(){
   tipo='?';
 }
 
-Servicio::Servicio(string cLv, int time, char type){
-  clave=cLv;
-  tiempoMax=time;
-  tipo=type;
+Servicio::Servicio(string clave, int tiempoMax, char tipo){
+  this -> clave = clave;
+  this -> tiempoMax = tiempoMax;
+  this -> tipo = tipo;
 }
 
 //Setters
-void Servicio::setClave(string cLv){
-  clave=cLv;
+void Servicio::setClave(string clave){
+  this -> clave = clave;
 }
 
-void Servicio::setTiempoMax(int time){
-  tiempoMax=time;
+void Servicio::setTiempoMax(int tiempoMax){
+  this -> tiempoMax = tiempoMax;
 }
 
-void Servicio::setTipo(char type){
-  tipo=type;
+void Servicio::setTipo(char tipo){
+  this -> tipo = tipo;
 }
 
 //Getters
@@ -285,16 +298,16 @@ Aparato::Aparato(double costMin,bool inst,string desc){
 }
 
 //Setters
-void Aparato::setCostoX15min(double costMin){
-  costo15m = costMin;
+void Aparato::setCostoX15min(double costo15m){
+  this -> costo15m = costo15m;
 }
 
-void Aparato::setConInstructor(bool inst){
-  conInstructor = inst;
+void Aparato::setConInstructor(bool conInstructor){
+  this -> conInstructor = conInstructor;
 }
 
-void Aparato::setDescripcion(string desc){
-  descripcion = desc;
+void Aparato::setDescripcion(string descripcion){
+  this -> descripcion = descripcion;
 }
 
 //Getters
@@ -331,7 +344,7 @@ void Aparato::muestra(){
   cout<<"Descripcion: "<<descripcion<<endl;
 }
 double Aparato::calculaCosto(int tiempo){
-  int x=tiempo/15;
+  int x = tiempo/15;
   return x * costo15m;
 }
 
@@ -368,23 +381,23 @@ Cancha::Cancha(){
   deporte="";
 }
 
-Cancha::Cancha(double cost,int cant,string sport){
-  costoPorHora=cost;
-  cantMaxPers=cant;
-  deporte=sport;
+Cancha::Cancha(double costoPorHora,int cantMaxPers, string deporte){
+  this -> costoPorHora = costoPorHora;
+  this -> cantMaxPers = cantMaxPers;
+  this -> deporte = deporte;
 }
 
 //Setters
-void Cancha::setCostoPorHora(double cant){
-  cantMaxPers = cant;
+void Cancha::setCostoPorHora(double cantMaxPers){
+  this -> cantMaxPers = cantMaxPers;
 }
 
-void Cancha::setCantMaxPersonas(int cost){
-  costoPorHora = cost;
+void Cancha::setCantMaxPersonas(int costoPorHora){
+  this -> costoPorHora = costoPorHora;
 }
 
-void Cancha::setDeporte(string sport){
-  deporte = sport;
+void Cancha::setDeporte(string deporte){
+  this -> deporte = deporte;
 }
 
 //Getters 
@@ -416,7 +429,7 @@ void Cancha::muestra(){
     cout<<"Volley Ball"<<endl;
   }
 
-  cout<<"Costo por Hora: "<<costoXHr<<endl;
+  cout<<"Costo por Hora: "<<costoPorHora<<endl;
   cout<<"Cantidad de personas: "<<cantMaxPers<<endl;
   cout<<"Deporte: "<<deporte<<endl;
 }
@@ -428,9 +441,11 @@ double Cancha::calculaCosto(int tiempo){
   if(x == 0){
     x = 1;
   }
- return x * costoXHr;
+ return x * costoPorHora;
 }
 
+
+//!Methods for Main
 
 void endProgram(){
     //Guardar Archivo, Cerrar Archivo y Terminar la Ejecución del Programa
@@ -440,7 +455,91 @@ void endProgram(){
 //Main del Programa
 int main(){
 
+    //Class Variable Declarations
     int opcionMenu = 99;
+    Servicio *arrServicios[20];
+    Reserva *arrReserva[20];
+
+    int serviciosCont = 0;
+    int aparatoCont = 0;
+    int reservaCont = 0;
+
+    //Start the program by reading the files, if the files doen't exist, notify the user and create them accordingly.
+    ifstream reservaRead(""); //Directory Relative to Project Path
+    ifstream servicioRead(""); //Directory Relative to Project Path
+
+    //Variable Declarations for the Reservations File
+    string claveServicio;
+    Hora horaObj;
+    int minutos, hora, tiempoEnMinutos, idCliente;
+
+    //Loop to Read the File 
+    while(!reservaRead.eof()){
+        cin>>claveServicio;
+        cin>>hora;
+        cin>>minutos;
+        cin>>tiempoEnMinutos;
+        cin>>idCliente;
+
+        Hora tmpHora(hora, minutos);
+        Reserva tmpReserva = new(claveServicio, idCliente, tmpHora, tiempoEnMinutos);
+        arrReserva[reservaCont] = &tmpReserva;
+        reservaCont++;
+    }
+
+    reservaRead.close();
+
+    //Variable Declarations for the Servicio File, which can be of type cancha or aparato, depending on the first char
+    string typeChooser;
+    //Type Aparato
+    string clave;     
+    int tiempoMax;
+    char tipo;
+    double costoX15min;
+    bool conInstructor;
+    string descripcion;
+  
+    //Type Cancha
+    string clave2;     
+    int tiempoMax2;
+    char tipo2;
+    double costoXHr;
+    int cantMaxPers;
+    string deporte;
+
+    //Loop to Read the Service File
+    while(!servicioRead.eof()){
+        servicioRead>>typeChooser;
+
+        if(typeChooser[0] == 'C' || typeChooser[0] =='E' || typeChooser[0] =='B'){
+            servicioRead>>clave;     
+            servicioRead>>tiempoMax;
+            servicioRead>>tipo;
+            servicioRead>>costoX15min;
+            servicioRead>>conInstructor;
+            servicioRead>>descripcion;
+            Aparato tmpAparato = &new Aparato(costoX15min, conInstructor, descripcion);
+            arrServicios[aparatoCont] = &tmpAparato;
+            aparatoCont++;
+            tmpAparato = NULL;
+        }else if(typeChooser[0] == 'T' || typeChooser[0] =='F' || typeChooser[0] =='V'){
+            servicioRead>>clave2;     
+            servicioRead>>tiempoMax2;
+            servicioRead>>tipo2;
+            servicioRead>>costoXHr;
+            servicioRead>>cantMaxPers;
+            servicioRead>>deporte;
+            Cancha tmpCancha = new Cancha(costoXHr, cantMaxPers, deporte);
+            arrServicios[serviciosCont] = &tmpCancha;
+            serviciosCont++;
+            tmpCancha = NULL;
+        }
+    }
+
+    reservaRead.close();
+
+
+    
 
     cout<<"Bienvenido al Sistema de Reservaciones!"<<endl;
 

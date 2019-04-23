@@ -461,12 +461,11 @@ int main(){
     Reserva *arrReserva[20];
 
     int serviciosCont = 0;
-    int aparatoCont = 0;
     int reservaCont = 0;
 
     //Start the program by reading the files, if the files doen't exist, notify the user and create them accordingly.
-    ifstream reservaRead(""); //Directory Relative to Project Path
-    ifstream servicioRead(""); //Directory Relative to Project Path
+    ifstream reservaRead("/Users/hisao/Documents/GitHub/ProgramacionOrientadaAObjetosITESM/Proyecto 3/Reserva.txt"); //Directory Relative to Project Path
+    ifstream servicioRead("/Users/hisao/Documents/GitHub/ProgramacionOrientadaAObjetosITESM/Proyecto 3/Servicios.txt"); //Directory Relative to Project Path
 
     //Variable Declarations for the Reservations File
     string claveServicio;
@@ -475,16 +474,18 @@ int main(){
 
     //Loop to Read the File 
     while(!reservaRead.eof()){
-        cin>>claveServicio;
-        cin>>hora;
-        cin>>minutos;
-        cin>>tiempoEnMinutos;
-        cin>>idCliente;
+        reservaRead>>claveServicio;
+        reservaRead>>hora;
+        reservaRead>>minutos;
+        reservaRead>>tiempoEnMinutos;
+        reservaRead>>idCliente;
 
         Hora tmpHora(hora, minutos);
-        Reserva tmpReserva = new(claveServicio, idCliente, tmpHora, tiempoEnMinutos);
-        arrReserva[reservaCont] = &tmpReserva;
+        Reserva* tmpReserva = new Reserva(claveServicio, idCliente, tmpHora, tiempoEnMinutos);
+        arrReserva[reservaCont] = tmpReserva;
         reservaCont++;
+        cout<<"Reserva #"<<reservaCont<<" Agregada!"<<endl;
+
     }
 
     reservaRead.close();
@@ -510,29 +511,28 @@ int main(){
     //Loop to Read the Service File
     while(!servicioRead.eof()){
         servicioRead>>typeChooser;
-
-        if(typeChooser[0] == 'C' || typeChooser[0] =='E' || typeChooser[0] =='B'){
-            servicioRead>>clave;     
+        if(typeChooser[0] == 'C' || typeChooser[0] =='E' || typeChooser[0] =='B'){   
             servicioRead>>tiempoMax;
             servicioRead>>tipo;
             servicioRead>>costoX15min;
             servicioRead>>conInstructor;
-            servicioRead>>descripcion;
-            Aparato tmpAparato = &new Aparato(costoX15min, conInstructor, descripcion);
-            arrServicios[aparatoCont] = &tmpAparato;
-            aparatoCont++;
-            tmpAparato = NULL;
-        }else if(typeChooser[0] == 'T' || typeChooser[0] =='F' || typeChooser[0] =='V'){
-            servicioRead>>clave2;     
+            servicioRead.clear();
+            getline(servicioRead, descripcion);
+            Aparato* tmpAparato = new Aparato(costoX15min, conInstructor, descripcion);
+            arrServicios[serviciosCont] = tmpAparato;
+            cout<<"Servicio Tipo 1 #"<<serviciosCont<<" Agregado!"<<endl;
+            serviciosCont++;
+        }else if(typeChooser[0] == 'T' || typeChooser[0] =='F' || typeChooser[0] =='V'){    
             servicioRead>>tiempoMax2;
             servicioRead>>tipo2;
             servicioRead>>costoXHr;
             servicioRead>>cantMaxPers;
-            servicioRead>>deporte;
-            Cancha tmpCancha = new Cancha(costoXHr, cantMaxPers, deporte);
-            arrServicios[serviciosCont] = &tmpCancha;
+            servicioRead.clear();
+            getline(servicioRead, deporte);
+            Cancha* tmpCancha = new Cancha(costoXHr, cantMaxPers, deporte);
+            arrServicios[serviciosCont] = tmpCancha;
+            cout<<"Servicio Tipo 2 #"<<serviciosCont<<" Agregado!"<<endl;
             serviciosCont++;
-            tmpCancha = NULL;
         }
     }
 
@@ -556,8 +556,37 @@ int main(){
     cin>>opcionMenu;
 
     switch(opcionMenu){
-        case 1:
+        case 1:{ //Mostrar todos los servicios
+        cout<<"-------------------------------------------------------------------------------------------"<<endl;
+        for(int i = 0; i < serviciosCont; i++){
+          arrServicios[i] -> muestra();
+          cout<<"-------------------------------------------------------------------------------------------"<<endl;
+        }
         break;
+        }
+        case 2:{ //Consulta de la Lista de Reservaciones (Mostrar Clave, ID, Hora de inicio y fin, y el costo)
+        cout<<"-------------------------------------------------------------------------------------------"<<endl;
+        for(int i = 0; i < reservaCont; i++){
+          arrReserva[i] -> getClaveServicio();
+          arrReserva[i] -> getIdCliente();
+          arrReserva[i] -> getHoraInicio();
+          arrReserva[i] -> calculaHoraFinReservacion();
+          arrReserva[i] -> calculaCosto();
+          cout<<"-------------------------------------------------------------------------------------------"<<endl;
+        }
+          break;
+        }
+        case 3:{ 
+          //Consulta las Reservaciones de un servicio dado (Pide ID del servicio y muestra datos, y muestra la hora
+          //inicial y final basado en las reservaciones existentes
+
+          break;
+        }
+        case 4:{
+          //Consulta de Reservaciones dada una Hora (h y m), muestra los servicios reservados usando el mtd muestra
+
+          break;
+        }
         case 6:
         endProgram();
         break;

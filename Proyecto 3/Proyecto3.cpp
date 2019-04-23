@@ -5,6 +5,7 @@ En este archivo estan todas las clases requeriadas por el programa, debidamente 
 Versión 1.2
 */
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 
@@ -66,6 +67,13 @@ int Hora::getHora(){
 
 int Hora::getMin(){
 	return mm;
+}
+
+void Hora::muestra(){
+  cout<<setfill('0')<<setw(2);
+  cout<<hh<<":";
+  cout<<setfill('0')<<setw(2);
+  cout<<mm;
 }
 
 //Sobrecarga de Operadores de la Clase Hora
@@ -445,12 +453,6 @@ double Cancha::calculaCosto(int tiempo){
 }
 
 
-//!Methods for Main
-
-void endProgram(){
-    //Guardar Archivo, Cerrar Archivo y Terminar la Ejecución del Programa
-}
-
 
 //Main del Programa
 int main(){
@@ -543,7 +545,7 @@ int main(){
 
     cout<<"Bienvenido al Sistema de Reservaciones!"<<endl;
 
-    while(opcionMenu != 6){
+    while(opcionMenu != 7){
 
     cout<<"Seleccione la Opcion deseada poniendo el numero en la consola"<<endl;
     cout<<"1.- Consultar la lista de servicios"<<endl;
@@ -554,6 +556,10 @@ int main(){
     cout<<"6.- Terminar"<<endl;
 
     cin>>opcionMenu;
+
+    if(opcionMenu == 7){
+      opcionMenu++;
+    }
 
     switch(opcionMenu){
         case 1:{ //Mostrar todos los servicios
@@ -567,11 +573,13 @@ int main(){
         case 2:{ //Consulta de la Lista de Reservaciones (Mostrar Clave, ID, Hora de inicio y fin, y el costo)
         cout<<"-------------------------------------------------------------------------------------------"<<endl;
         for(int i = 0; i < reservaCont; i++){
-          arrReserva[i] -> getClaveServicio();
-          arrReserva[i] -> getIdCliente();
-          arrReserva[i] -> getHoraInicio();
-          arrReserva[i] -> calculaHoraFinReservacion();
-          arrReserva[i] -> calculaCosto();
+          cout<<"La clave del servicio Reservado es: "<<arrReserva[i] -> getClaveServicio()<<endl;
+          cout<<"El ID del Cliente es: "<<arrReserva[i] -> getIdCliente()<<endl;
+          cout<<"La hora inicial de la reserva es: ";
+          arrReserva[i] -> getHoraInicio().muestra();
+          cout<<endl;
+          //arrReserva[i] -> calculaHoraFinReservacion();
+          //arrReserva[i] -> calculaCosto();
           cout<<"-------------------------------------------------------------------------------------------"<<endl;
         }
           break;
@@ -579,7 +587,7 @@ int main(){
         case 3:{ 
           //Consulta las Reservaciones de un servicio dado (Pide ID del servicio y muestra datos, y muestra la hora
           //inicial y final basado en las reservaciones existentes
-
+          
           break;
         }
         case 4:{
@@ -587,13 +595,23 @@ int main(){
 
           break;
         }
-        case 6:
-        endProgram();
-        break;
+        case 5:{
+          //Hacer una reservacion, pregunta ID, clave de servicio, la hora inicial y duracion.
+          //Debe de validar que la clave del servicio sea valida, que este disponible duante las horas y
+          //el tiempo maximo de reserva. En caso de no poder, se debera notificar y el usuario dara nueva hora
+          cout<<"Para hacer una reservacion deme su ID de cliente"<<endl;
 
+          cout<<"Cual es la clave del servicio que desea rentar?"<<endl;
 
+          cout<<"A que hora comenzaria la reservacion? (Formato: HH MM)"<<endl;
 
+          cout<<"Cuanto duraria la reservacion? (Formato: 000 - En Minutos)"<<endl;
 
+        }
+        case 6:{
+          opcionMenu++; //Adds one to the counter so that the program stops (While condition not satisfied)
+          break;
+        }
     }
 
     }
